@@ -6,6 +6,7 @@ const fs = require('fs');
 //Middleware
 //This will help us use our layout file
 app.use(expressLayouts);
+app.use(express.urlencoded({extended: false}));
 
 //for views use ejs files:
 app.set('view engine', 'ejs');
@@ -24,14 +25,14 @@ app.get('/dinosaurs', (req, res) => {
     console.log(dinos);
 //This is where we pass 'dinos' object to dinosaurs/index
     res.render('dinosaurs/index', { dinos: dinos })
-
 })
-//POST route, doesn't have a view
-app.post('/dinosaurs', (req, res) => {
-    //this is coming from our form submit. we use req.body
 
-    console.log(req.body);
-});
+//NEW View
+//most specific to least specific URL path
+app.get('/dinosaurs/new', (req, res) => {
+    res.render('dinosaurs/new')
+})
+
 
 //SHOW View
 app.get('/dinosaurs/:index', (req, res) => {
@@ -43,7 +44,11 @@ app.get('/dinosaurs/:index', (req, res) => {
     res.render('dinosaurs/show', { dino })
 })
 
-
+//POST route, doesn't have a view
+app.post('/dinosaurs', (req, res) => {
+    //this is coming from our form submit. we use req.body
+    console.log(req.body);
+});
 
 
 const PORT = process.env.PORT || 8000;
